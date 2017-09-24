@@ -1,0 +1,1 @@
+A dummy test app that aims to fetch some data from Tumblr API and produce some statistics.
