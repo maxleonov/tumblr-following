@@ -1,3 +1,5 @@
 click
 PyTumblr
 SQLAlchemy
+ipython
+jupyter

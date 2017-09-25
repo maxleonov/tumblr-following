@@ -9,13 +9,12 @@ from tower.model import Base
 
 @click.group()
 def main():
-	setup_logging()
-	Base.metadata.create_all(engine)
+    setup_logging()
+    Base.metadata.create_all(engine)
 
 
 main.add_command(fetch_posts)
 main.add_command(fetch_following)
 
-
 if __name__ == '__main__':
-	main()
+    main()
