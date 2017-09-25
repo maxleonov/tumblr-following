@@ -1,4 +1,4 @@
-from sqlalchemy import DateTime, Column, BigInteger, String
+from sqlalchemy import DateTime, Column, BigInteger, String, Integer
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
@@ -14,3 +14,13 @@ class Post(Base):
 	reblogged_root_name = Column(String)
 	type = Column(String)
 	date = Column(DateTime)
+
+
+class Following(Base):
+	__tablename__ = 'following'
+
+	id = Column(Integer, primary_key=True)
+	name = Column(String)
+	title = Column(String)
+	description = Column(String)
+	url = Column(String)

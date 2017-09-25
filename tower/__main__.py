@@ -1,5 +1,6 @@
 import click
 
+from tower.commands.fetch_following import fetch_following
 from tower.commands.fetch_posts import fetch_posts
 from tower.database import engine
 from tower.logging import setup_logging
@@ -13,6 +14,7 @@ def main():
 
 
 main.add_command(fetch_posts)
+main.add_command(fetch_following)
 
 
 if __name__ == '__main__':
