@@ -44,7 +44,7 @@ pip install -r requirements.txt
 ```
 
 #### Set up OAuth credentials
-1. Authorize [Tower](https://api.tumblr.com/console/auth?consumer_key=4OeRg5EJrJczu1sE1EOwD193A7LM5QiW2s9Ycqd5GbLjyXv1ZE&consumer_secret=smj1CpcKF31WvyWPjI02UKvsCaol4XYA8wBiKbJM2AVMRywSgc) to access account data
+1. Authorize [Tower](https://www.tumblr.com/oauth/authorize?oauth_token=8mr7OT8H2LtOCRESV3ulrL910lDYDnSt3zOmVXjoj5VPo2yVBr) to access account data
 2. Click _Python_
 3. Copy keys to tower/tumblr_client.py (this is a temporary solution, until a proper way of storing the OAuth credentials is introduced)
 
