@@ -1,7 +1,7 @@
-##### Idea
+### Idea
 Build a helper tool that helps a Tumblr user to clean up the list of blogs they follow.
 
-#### User story
+### User story
 As a Tumblr user myself, I found that:
 - I follow `'\d{3,}'` blogs
 - I _know_ that many of these blogs are probably dead (no posts in the last months/years)
@@ -16,15 +16,37 @@ As a Tumblr user myself, I found that:
     - list of blogs I mostly reblog from
     - how many posts do I have per period (yearly, monthly, daily, in total)
 
-#### (First) goals
+### (First) goals
 Display the following data to a Tumblr user:
 - blogs they reblog from the most
 - blogs they might want to unfollow (dead or not reblogged from)
 
-#### Technology stack:
+### Technology stack:
 - Python 3.6+
     - SQLAlchemy
     - Click
     - PyTumblr
     - Pandas
 - SQLite
+
+### How to
+#### Install the app
+Install [Pyenv](https://github.com/pyenv/pyenv#installation)
+```
+git clone https://github.com/maxleonov/tumblr-following.git
+cd tumblr-following
+pyenv install --skip-existing 3.6.1
+pyenv local 3.6.1
+pip install virtualenv
+virtualenv venv
+. venv/bin/activate
+pip install -r requirements.txt
+```
+
+#### Set up OAuth credentials
+1. Authorize [Tower](https://api.tumblr.com/console/auth?consumer_key=4OeRg5EJrJczu1sE1EOwD193A7LM5QiW2s9Ycqd5GbLjyXv1ZE&consumer_secret=smj1CpcKF31WvyWPjI02UKvsCaol4XYA8wBiKbJM2AVMRywSgc) to access account data
+2. Click _Python_
+3. Copy keys to tower/tumblr_client.py (this is a temporary solution, until a proper way of storing the OAuth credentials is introduced)
+
+#### Run the app
+TODO
