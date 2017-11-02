@@ -1,6 +1,7 @@
-The initial goal is to build a helper tool that helps a Tumblr user to clean up the list of blogs they follow.
+##### Idea
+Build a helper tool that helps a Tumblr user to clean up the list of blogs they follow.
 
-User story behind it:
+#### User story
 As a Tumblr user myself, I found that:
 - I follow `'\d{3,}'` blogs
 - I _know_ that many of these blogs are probably dead (no posts in the last months/years)
@@ -15,10 +16,15 @@ As a Tumblr user myself, I found that:
 - As the result, I want to follow as few blogs as possible
 - Which is, I want to be able to unfollow the blogs that I choose based on the numbers
 
-To make it possible, the user should see
+#### (First) goals
+Display the following data to a Tumblr user:
 - blogs they reblog from the most
 - blogs they might want to unfollow (dead or not reblogged from)
 
-Technology stack:
+#### Technology stack:
 - Python 3.6+
+    - SQLAlchemy
+    - Click
+    - PyTumblr
+    - Pandas
 - SQLite
