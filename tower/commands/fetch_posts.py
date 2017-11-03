@@ -2,6 +2,7 @@ import datetime
 import logging
 
 import click
+from sqlalchemy.exc import IntegrityError
 
 from tower.database import Session
 from tower.model import Post
@@ -12,12 +13,16 @@ l = logging.getLogger(__name__)
 
 @click.command('fetch-posts')
 @click.argument('blog-name')
-def fetch_posts(blog_name: str):
+@click.option('--newer-first', is_flag=True, default=False)
+def fetch_posts(blog_name: str, newer_first: bool):
     tumblr_client = get_tumblr_client()
     session = Session()
 
+    offset = 0
+
     while True:
-        offset = session.query(Post).filter(Post.blog_name == blog_name).count()
+        if not newer_first:
+            offset = session.query(Post).filter(Post.blog_name == blog_name).count()
 
         l.info('Fetching "%s" posts starting at %s', blog_name, offset)
 
@@ -32,6 +37,9 @@ def fetch_posts(blog_name: str):
         except AssertionError:
             l.info('All items have been fetched!')
             return
+        else:
+            if newer_first:
+                offset += len(response['posts'])
 
         for post in response['posts']:
             session.add(Post(
@@ -44,4 +52,8 @@ def fetch_posts(blog_name: str):
                 date=datetime.datetime.strptime(post['date'], '%Y-%m-%d %H:%M:%S GMT')
             ))
 
-        session.commit()
+            try:
+                session.commit()
+            except IntegrityError:
+                l.info('Item is already in the DB')
+                return
