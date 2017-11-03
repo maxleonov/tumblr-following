@@ -5,7 +5,7 @@ import click
 
 from tower.database import Session
 from tower.model import Post
-from tower.tumblr_client import tumblr_client
+from tower.tumblr_client import get_tumblr_client
 
 l = logging.getLogger(__name__)
 
@@ -13,6 +13,7 @@ l = logging.getLogger(__name__)
 @click.command('fetch-posts')
 @click.argument('blog-name')
 def fetch_posts(blog_name: str):
+    tumblr_client = get_tumblr_client()
     session = Session()
 
     while True:
@@ -26,7 +27,11 @@ def fetch_posts(blog_name: str):
             offset=offset
         )
 
-        assert (len(response['posts']) > 0)
+        try:
+            assert(len(response['posts']))
+        except AssertionError:
+            l.info('All items have been fetched!')
+            return
 
         for post in response['posts']:
             session.add(Post(

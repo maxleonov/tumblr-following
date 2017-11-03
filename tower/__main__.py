@@ -3,7 +3,7 @@ import click
 from tower.commands.fetch_following import fetch_following
 from tower.commands.fetch_posts import fetch_posts
 from tower.database import engine
-from tower.logging import setup_logging
+from tower.log import setup_logging
 from tower.model import Base
 
 

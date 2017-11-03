@@ -3,3 +3,4 @@ PyTumblr
 SQLAlchemy
 ipython
 jupyter
+pyyaml

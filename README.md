@@ -29,8 +29,7 @@ Display the following data to a Tumblr user:
     - Pandas
 - SQLite
 
-### How to
-#### Install the app
+### Installation
 Install [Pyenv](https://github.com/pyenv/pyenv#installation)
 ```
 git clone https://github.com/maxleonov/tumblr-following.git
@@ -40,13 +39,18 @@ pyenv local 3.6.1
 pip install virtualenv
 virtualenv venv
 . venv/bin/activate
-pip install -r requirements.txt
+pip install -e .
 ```
 
-#### Set up OAuth credentials
-1. Authorize [Tower](https://www.tumblr.com/oauth/authorize?oauth_token=8mr7OT8H2LtOCRESV3ulrL910lDYDnSt3zOmVXjoj5VPo2yVBr) to use your Tumblr account
-2. Click _Python_
-3. Copy keys to tower/tumblr_client.py (this is a temporary solution, until a proper way of storing the OAuth credentials is introduced)
+### Running
+```
+$ tower
+Usage: tower [OPTIONS] COMMAND [ARGS]...
 
-#### Run the app
-TODO
+Options:
+  --help  Show this message and exit.
+
+Commands:
+  fetch-following
+  fetch-posts
+```
