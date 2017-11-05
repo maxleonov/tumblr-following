@@ -7,14 +7,14 @@ from sqlalchemy.exc import IntegrityError
 from tower.database import Session
 from tower.model import Post
 from tower.tumblr_client import get_tumblr_client
-from tower.commands import help
+from tower.commands import HELP_FETCH_POSTS_NEWER_FIRST
 
 l = logging.getLogger(__name__)
 
 
 @click.command('fetch-posts')
 @click.argument('blog-name')
-@click.option('--newer-first', is_flag=True, default=False, help=help.HELP_FETCH_POSTS_NEWER_FIRST)
+@click.option('--newer-first', is_flag=True, default=False, help=HELP_FETCH_POSTS_NEWER_FIRST)
 def fetch_posts(blog_name: str, newer_first: bool):
     tumblr_client = get_tumblr_client()
     session = Session()

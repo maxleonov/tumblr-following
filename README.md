@@ -34,10 +34,9 @@ Install [Pyenv](https://github.com/pyenv/pyenv#installation)
 ```
 git clone https://github.com/maxleonov/tumblr-following.git
 cd tumblr-following
-pyenv install --skip-existing 3.6.1
+PYTHON_CONFIGURE_OPTS="--enable-framework" pyenv install --skip-existing 3.6.1
 pyenv local 3.6.1
-pip install virtualenv
-virtualenv venv
+python3.6 -m venv venv
 . venv/bin/activate
 pip install -e .
 ```
