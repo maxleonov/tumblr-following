@@ -38,13 +38,10 @@ def fetch_posts(blog_name: str, newer_first: bool):
         except AssertionError:
             l.info('All items have been fetched!')
             return
-        else:
-            if newer_first:
-                offset += len(response['posts'])
 
         counter = 0
+
         for post in response['posts']:
-            counter += 1
             session.add(Post(
                 id=post['id'],
                 post_url=post['post_url'],
@@ -60,4 +57,9 @@ def fetch_posts(blog_name: str, newer_first: bool):
             except IntegrityError:
                 return
             else:
-                l.info('%s items saved', counter)
+                counter += 1
+
+        l.info('%s items saved', counter)
+
+        if newer_first:
+            offset += len(response['posts'])

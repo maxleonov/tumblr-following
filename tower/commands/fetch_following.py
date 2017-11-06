@@ -1,6 +1,7 @@
 import logging
 
 import click
+from sqlalchemy.exc import IntegrityError
 
 from tower.database import Session
 from tower.model import Following
@@ -18,9 +19,9 @@ def fetch_following():
 
     session = Session()
 
-    while True:
-        offset = session.query(Following).count()
+    offset = 0
 
+    while True:
         l.info('Fetching blogs followed by "%s" starting at %s', user_name, offset)
 
         response = tumblr_client.following(
@@ -33,6 +34,8 @@ def fetch_following():
             l.info('All items have been fetched!')
             break
 
+        counter = 0
+
         for blog in response['blogs']:
             session.add(Following(
                 name=blog['name'],
@@ -41,4 +44,13 @@ def fetch_following():
                 url=blog['url']
             ))
 
-        session.commit()
+            try:
+                session.commit()
+            except IntegrityError:
+                pass
+            else:
+                counter += 1
+
+        l.info('%s items saved', counter)
+
+        offset += len(response['blogs'])
