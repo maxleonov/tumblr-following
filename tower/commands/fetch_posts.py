@@ -42,7 +42,9 @@ def fetch_posts(blog_name: str, newer_first: bool):
             if newer_first:
                 offset += len(response['posts'])
 
+        counter = 0
         for post in response['posts']:
+            counter += 1
             session.add(Post(
                 id=post['id'],
                 post_url=post['post_url'],
@@ -56,5 +58,6 @@ def fetch_posts(blog_name: str, newer_first: bool):
             try:
                 session.commit()
             except IntegrityError:
-                l.info('Item is already in the DB')
                 return
+            else:
+                l.info('%s items saved', counter)
