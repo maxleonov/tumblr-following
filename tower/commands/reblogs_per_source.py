@@ -1,8 +1,9 @@
+from datetime import datetime, timedelta
+
 import click
 import pandas as pd
 import matplotlib.pyplot as plt
 import dateutil
-from datetime import datetime, timedelta
 from sqlalchemy import func
 
 from tower.database import Session
@@ -23,11 +24,11 @@ def reblogs_per_source(blog_name: str, top: int, since_date: str):
             Post.date >= since_date,
             Post.blog_name == blog_name,
             (Following.name == Post.reblogged_from_name) | (Following.name == Post.reblogged_root_name)
-        ).group_by(Following.name).statement,
+        ).group_by(Following.name).order_by('count_1 DESC').statement,
         session.bind
     )
 
     print(df[['name', 'count_1']])
 
-    df[['name', 'count_1']].plot(kind='pie', x='name', y='count_1')
+    df[['name', 'count_1']].plot(kind='pie', x='name', y='count_1', labels=df['name'])
     plt.show()
