@@ -35,5 +35,7 @@ def reblogs_per_source(user_name: str, blog_name: str, top: int, since_date: str
     ))
     print(df[['name', 'count']])
 
-    df[['name', 'count']].plot(kind='pie', x='name', y='count', labels=df['name'])
+    ax = df[['name', 'count']].plot(kind='pie', x='name', y='count', labels=df['name'])
+    ax.set_xlabel('')
+    ax.set_ylabel('')
     plt.show()

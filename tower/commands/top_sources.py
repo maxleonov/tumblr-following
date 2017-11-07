@@ -33,16 +33,25 @@ def top_sources(blog_name: str, top: int, since_date: str):
         ).statement,
         session.bind
     )
-    df = pd.concat([
+    value_counts = pd.concat([
         df1['reblogged_from_name'][df1['reblogged_from_name'] != ''],
         df2['reblogged_from_name'][df2['reblogged_from_name'] != ''],
         df2['reblogged_root_name'][df2['reblogged_root_name'] != '']
-    ])
+    ]).value_counts().nlargest(top)
+
+    # Convert to pd.DataFrame. In fact, this step is not necessary and is resource-greedy. Still, I want to treat the piece of data as a DataFrame.
+    value_counts = dict(value_counts)
+    df = pd.DataFrame({
+        'name': list(value_counts.keys()),
+        'count': list(value_counts.values())
+    })
 
     print('Top {} blogs for {} since {}'.format(
         top, blog_name, since_date.strftime('%Y-%m-%d')
     ))
-    print(df.value_counts().nlargest(top))
+    print(df[['name', 'count']])
 
-    df.value_counts().plot(kind='pie')
+    ax = df[['name', 'count']].plot(kind='pie', x='name', y='count', labels=df['name'])
+    ax.set_xlabel('')
+    ax.set_ylabel('')
     plt.show()
