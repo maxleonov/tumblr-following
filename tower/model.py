@@ -1,4 +1,4 @@
-from sqlalchemy import DateTime, Column, BigInteger, String, Integer
+from sqlalchemy import DateTime, Column, BigInteger, String, Integer, UniqueConstraint
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
@@ -18,8 +18,10 @@ class Post(Base):
 
 class Following(Base):
     __tablename__ = 'following'
+    __table_args__ = (UniqueConstraint('name', 'user_name'),)
 
     id = Column(Integer, primary_key=True)
+    user_name = Column(String)
     name = Column(String)
     title = Column(String)
     description = Column(String)

@@ -1,7 +1,7 @@
 import logging
 
 import click
-from sqlalchemy.exc import IntegrityError
+from sqlalchemy.exc import IntegrityError, InvalidRequestError
 
 from tower.database import Session
 from tower.model import Following
@@ -38,6 +38,7 @@ def fetch_following():
 
         for blog in response['blogs']:
             session.add(Following(
+                user_name=user_name,
                 name=blog['name'],
                 title=blog['title'],
                 description=blog['description'],
@@ -46,7 +47,7 @@ def fetch_following():
 
             try:
                 session.commit()
-            except IntegrityError:
+            except (IntegrityError, InvalidRequestError):
                 pass
             else:
                 counter += 1
