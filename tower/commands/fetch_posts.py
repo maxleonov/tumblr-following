@@ -55,6 +55,8 @@ def fetch_posts(blog_name: str, newer_first: bool):
             try:
                 session.commit()
             except IntegrityError:
+                session.rollback()
+                l.info('All items have been fetched!')
                 return
             else:
                 counter += 1

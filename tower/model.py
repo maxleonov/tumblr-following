@@ -18,11 +18,11 @@ class Post(Base):
 
 class Following(Base):
     __tablename__ = 'following'
-    __table_args__ = (UniqueConstraint('name', 'user_name'),)
+    __table_args__ = (UniqueConstraint('user_name', 'blog_name'),)
 
     id = Column(Integer, primary_key=True)
     user_name = Column(String)
-    name = Column(String)
+    blog_name = Column(String)
     title = Column(String)
     description = Column(String)
     url = Column(String)

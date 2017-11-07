@@ -19,7 +19,7 @@ def fetch_following():
 
     session = Session()
 
-    offset = 0
+    offset = 80
 
     while True:
         l.info('Fetching blogs followed by "%s" starting at %s', user_name, offset)
@@ -37,9 +37,10 @@ def fetch_following():
         counter = 0
 
         for blog in response['blogs']:
+            print(blog['name'])
             session.add(Following(
                 user_name=user_name,
-                name=blog['name'],
+                blog_name=blog['name'],
                 title=blog['title'],
                 description=blog['description'],
                 url=blog['url']
@@ -48,6 +49,7 @@ def fetch_following():
             try:
                 session.commit()
             except (IntegrityError, InvalidRequestError):
+                session.rollback()
                 pass
             else:
                 counter += 1
