@@ -21,21 +21,24 @@ def reblogs_per_source(user_name: str, blog_name: str, top: int, since_date: str
     session = Session()
 
     df = pd.read_sql(
-        session.query(Following.blog_name, func.count(Post.id).label('count'))
-        .filter(    
+        session.query(Following.blog_name, func.count(Post.id).label('posts'))
+        .filter(
             Following.user_name == user_name
         )
-        .outerjoin(Post, and_((Following.blog_name == Post.reblogged_from_name) | (Following.blog_name == Post.reblogged_root_name), Post.date >= since_date, Post.blog_name == blog_name))
-        .group_by(Following.blog_name).order_by(desc('count')).limit(top).statement,
+        .outerjoin(Post, and_(
+            (Following.blog_name == Post.reblogged_from_name) | (Following.blog_name == Post.reblogged_root_name),
+            Post.date >= since_date, Post.blog_name == blog_name)
+        )
+        .group_by(Following.blog_name).order_by(desc('posts')).limit(top).statement,
         session.bind
     )
 
     print('Number of posts on {} reblogged from blogs [since {}] followed by {}. This is top {}'.format(
        blog_name, since_date.strftime('%Y-%m-%d'), user_name, top
     ))
-    print(df[['blog_name', 'count']])
+    print(df[['blog_name', 'posts']])
 
-    ax = df[['blog_name', 'count']].plot(kind='pie', x='blog_name', y='count', labels=df['blog_name'])
+    ax = df[['blog_name', 'posts']].plot(kind='pie', x='blog_name', y='posts', labels=df['blog_name'])
     ax.set_xlabel('')
     ax.set_ylabel('')
     plt.show()

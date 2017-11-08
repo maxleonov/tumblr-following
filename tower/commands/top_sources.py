@@ -43,15 +43,15 @@ def top_sources(blog_name: str, top: int, since_date: str):
     value_counts = dict(value_counts)
     df = pd.DataFrame({
         'name': list(value_counts.keys()),
-        'count': list(value_counts.values())
+        'posts': list(value_counts.values())
     })
 
-    print('Top {} blogs for {} since {}'.format(
+    print('Top {} blogs reblogged on {} since {}'.format(
         top, blog_name, since_date.strftime('%Y-%m-%d')
     ))
-    print(df[['name', 'count']])
+    print(df[['name', 'posts']])
 
-    ax = df[['name', 'count']].plot(kind='pie', x='name', y='count', labels=df['name'])
+    ax = df[['name', 'posts']].plot(kind='pie', x='name', y='posts', labels=df['name'])
     ax.set_xlabel('')
     ax.set_ylabel('')
     plt.show()
