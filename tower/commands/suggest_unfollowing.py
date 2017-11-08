@@ -43,6 +43,6 @@ def suggest_unfollowing(user_name: str, blog_name: str, since_date: str, reblogs
         '    client.unfollow(blog)'
         .format(
             reblogs_less_than, blog_name, since_date.strftime('%Y-%m-%d'),
-            [blog for blog in list(df.blog_name[df.posts == 0])]
+            [blog for blog in list(df.blog_name[df.posts < reblogs_less_than])]
         )
     )
