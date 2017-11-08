@@ -8,6 +8,7 @@ from sqlalchemy import func, desc, and_
 
 from tower.database import Session
 from tower.model import Post, Following
+from tower.helpers import add_tumblr_com
 
 
 @click.command('top-following')
@@ -34,7 +35,7 @@ def reblogs_per_source(user_name: str, blog_name: str, top: int, since_date: str
     )
 
     print('Number of posts on {} reblogged from blogs [since {}] followed by {}. This is top {}'.format(
-       blog_name, since_date.strftime('%Y-%m-%d'), user_name, top
+       add_tumblr_com(blog_name), since_date.strftime('%Y-%m-%d'), user_name, top
     ))
     with pd.option_context('display.max_rows', None, 'display.max_columns', 3):
         print(df[['blog_name', 'posts']])

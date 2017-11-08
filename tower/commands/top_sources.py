@@ -6,6 +6,7 @@ from datetime import datetime, timedelta
 
 from tower.database import Session
 from tower.model import Post
+from tower.helpers import add_tumblr_com
 
 
 @click.command('top-sources')
@@ -47,7 +48,7 @@ def top_sources(blog_name: str, top: int, since_date: str):
     })
 
     print('Top {} blogs reblogged on {} since {}'.format(
-        top, blog_name, since_date.strftime('%Y-%m-%d')
+        top, add_tumblr_com(blog_name), since_date.strftime('%Y-%m-%d')
     ))
     with pd.option_context('display.max_rows', None, 'display.max_columns', 3):
         print(df[['name', 'posts']])
