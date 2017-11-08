@@ -13,7 +13,8 @@ from tower.model import Post, Following
 @click.argument('user-name')
 @click.argument('blog-name')
 @click.option('--since-date', default=(datetime.today()-timedelta(days=365)).strftime('%Y-%m-%d'))
-def suggest_unfollowing(user_name: str, blog_name: str, since_date: str):
+@click.option('--reblogs-less-than', default=1)
+def suggest_unfollowing(user_name: str, blog_name: str, since_date: str, reblogs_less_than=1):
     since_date = dateutil.parser.parse(since_date)
 
     session = Session()
@@ -32,7 +33,7 @@ def suggest_unfollowing(user_name: str, blog_name: str, since_date: str):
     )
 
     print(  # TODO improve wording
-        'Some blogs are being followed but have zero reblogs to {} since {}.\n'
+        'Some blogs are being followed but have less than {} reblog(s) to {} since {}.\n'
         'The idea here is that a user might want to unfollow blogs that they follow don\'t reblog.\n'
         'Please use at your own risk and make sure you udnerstand what the below code does.\n'
         'Consider unfollowing them:\n'
@@ -41,7 +42,7 @@ def suggest_unfollowing(user_name: str, blog_name: str, since_date: str):
         'for blog in blogs:\n'
         '    client.unfollow(blog)'
         .format(
-            blog_name, since_date.strftime('%Y-%m-%d'),
+            reblogs_less_than, blog_name, since_date.strftime('%Y-%m-%d'),
             [blog for blog in list(df.blog_name[df.posts == 0])]
         )
     )
