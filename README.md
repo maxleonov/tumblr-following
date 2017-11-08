@@ -52,4 +52,7 @@ Options:
 Commands:
   fetch-following
   fetch-posts
+  suggest-unfollowing
+  top-following
+  top-sources
 ```
