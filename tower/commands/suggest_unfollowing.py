@@ -8,6 +8,7 @@ from sqlalchemy import func, desc, and_
 from tower.database import Session
 from tower.model import Post, Following
 from tower.helpers import add_tumblr_com
+from tower.tumblr_client import get_tumblr_client
 
 
 @click.command('suggest-unfollowing')
@@ -32,6 +33,7 @@ def suggest_unfollowing(user_name: str, blog_name: str, since_date: str, reblogs
         .group_by(Following.blog_name).order_by(desc('posts')).statement,
         session.bind
     )
+    blogs = [blog for blog in list(df.blog_name[df.posts < reblogs_less_than])]
 
     print(
         'Use this information at your own risk.\n'
@@ -42,13 +44,16 @@ def suggest_unfollowing(user_name: str, blog_name: str, since_date: str, reblogs
         'and calculate the number of posts reblogged from each blog to {} since {}.\n'
         '2. Provide suggestions:\n'
         'If the number of reblogs is less than {}, we suggest considering to unfollow the blog.\n\n'
-        'The commands below can be used to unfollow blogs, as explained above:\n\n'
-        'python tower/interactive_console.py\n'
-        'blogs = {}\n'
-        'for blog in blogs:\n'
-        '    client.unfollow(blog)'
+        'You can see the list of such blogs below:\n'
+        '{}'
         .format(
             user_name, add_tumblr_com(blog_name), since_date.strftime('%Y-%m-%d'), reblogs_less_than,
-            [blog for blog in list(df.blog_name[df.posts < reblogs_less_than])]
+            blogs
         )
     )
+
+    if len(blogs) and input('Please type "yes" and hit Enter, if you wish to unfollow the blogs metioned above right now: ') == 'yes':
+        tumblr_client = get_tumblr_client()
+        for blog in blogs:
+            print('Unfollowing {}'.format(blog))
+            tumblr_client.unfollow(blog)
