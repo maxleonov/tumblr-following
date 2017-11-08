@@ -12,9 +12,8 @@ from tower.model import Post, Following
 @click.command('suggest-unfollowing')
 @click.argument('user-name')
 @click.argument('blog-name')
-@click.option('--top', default=100)
-@click.option('--since-date', default=(datetime.today()-timedelta(days=3)).strftime('%Y-%m-%d'))
-def suggest_unfollowing(user_name: str, blog_name: str, top: int, since_date: str):
+@click.option('--since-date', default=(datetime.today()-timedelta(days=365)).strftime('%Y-%m-%d'))
+def suggest_unfollowing(user_name: str, blog_name: str, since_date: str):
     since_date = dateutil.parser.parse(since_date)
 
     session = Session()
@@ -28,7 +27,7 @@ def suggest_unfollowing(user_name: str, blog_name: str, top: int, since_date: st
             (Following.blog_name == Post.reblogged_from_name) | (Following.blog_name == Post.reblogged_root_name),
             Post.date >= since_date, Post.blog_name == blog_name)
         )
-        .group_by(Following.blog_name).order_by(desc('posts')).limit(top).statement,
+        .group_by(Following.blog_name).order_by(desc('posts')).statement,
         session.bind
     )
 

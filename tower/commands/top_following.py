@@ -14,7 +14,7 @@ from tower.model import Post, Following
 @click.argument('user-name')
 @click.argument('blog-name')
 @click.option('--top', default=100)
-@click.option('--since-date', default=(datetime.today()-timedelta(days=3)).strftime('%Y-%m-%d'))
+@click.option('--since-date', default=(datetime.today()-timedelta(days=365)).strftime('%Y-%m-%d'))
 def reblogs_per_source(user_name: str, blog_name: str, top: int, since_date: str):
     since_date = dateutil.parser.parse(since_date)
 
