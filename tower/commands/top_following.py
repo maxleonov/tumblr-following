@@ -36,7 +36,8 @@ def reblogs_per_source(user_name: str, blog_name: str, top: int, since_date: str
     print('Number of posts on {} reblogged from blogs [since {}] followed by {}. This is top {}'.format(
        blog_name, since_date.strftime('%Y-%m-%d'), user_name, top
     ))
-    print(df[['blog_name', 'posts']])
+    with pd.option_context('display.max_rows', None, 'display.max_columns', 3):
+        print(df[['blog_name', 'posts']])
 
     ax = df[['blog_name', 'posts']].plot(kind='pie', x='blog_name', y='posts', labels=df['blog_name'])
     ax.set_xlabel('')

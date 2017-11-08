@@ -49,7 +49,8 @@ def top_sources(blog_name: str, top: int, since_date: str):
     print('Top {} blogs reblogged on {} since {}'.format(
         top, blog_name, since_date.strftime('%Y-%m-%d')
     ))
-    print(df[['name', 'posts']])
+    with pd.option_context('display.max_rows', None, 'display.max_columns', 3):
+        print(df[['name', 'posts']])
 
     ax = df[['name', 'posts']].plot(kind='pie', x='name', y='posts', labels=df['name'])
     ax.set_xlabel('')
