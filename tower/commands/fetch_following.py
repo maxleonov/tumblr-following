@@ -11,7 +11,8 @@ l = logging.getLogger(__name__)
 
 
 @click.command('fetch-following')
-def fetch_following():
+@click.option('--delete-first', is_flag=True, default=False, help='Delete values from the DB before fetching')
+def fetch_following(delete_first: bool):
     tumblr_client = get_tumblr_client()
 
     user_info = tumblr_client.info()
@@ -19,7 +20,12 @@ def fetch_following():
 
     session = Session()
 
-    offset = 80
+    if delete_first:
+        session.query(Following).filter(
+            Following.user_name == user_name
+        ).delete()
+
+    offset = 0
 
     while True:
         l.info('Fetching blogs followed by "%s" starting at %s', user_name, offset)
@@ -37,7 +43,6 @@ def fetch_following():
         counter = 0
 
         for blog in response['blogs']:
-            print(blog['name'])
             session.add(Following(
                 user_name=user_name,
                 blog_name=blog['name'],
