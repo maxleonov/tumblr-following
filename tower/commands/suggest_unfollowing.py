@@ -44,10 +44,11 @@ def suggest_unfollowing(user_name: str, blog_name: str, since_date: str, reblogs
         'and calculate the number of posts reblogged from each blog to {} since {}.\n'
         '2. Provide suggestions:\n'
         'If the number of reblogs is less than {}, we suggest considering to unfollow the blog.\n\n'
-        'You can see the list of such blogs below:\n'
+        'You can see the list of {} such blogs below:\n'
         '{}'
         .format(
             user_name, add_tumblr_com(blog_name), since_date.strftime('%Y-%m-%d'), reblogs_less_than,
+            len(blogs),
             blogs
         )
     )

@@ -62,3 +62,12 @@ def fetch_following(delete_first: bool):
         l.info('%s items saved', counter)
 
         offset += len(response['blogs'])
+
+    following_count = session.query(Following).filter(
+        Following.user_name == user_name
+    ).count()
+
+    print('{} follows {} blogs'.format(
+        user_name,
+        following_count
+    ))
